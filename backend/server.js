@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
 import express from "express";
 import notesRouter from "./routes/notes.js"
-
+import dotenv from 'dotenv';
 const app=express();
-const PORT=5000;
+dotenv.config();
+const PORT= process.env.PORT || 5000;
+const DATABASE_URl = process.env.DATABASE_URl || "mongodb://localhost:27017/test"
 
+app.get('/', (req,res)=>{
+    res.send('hello world');
+})
 app.use(express.json());
 app.use("/api/notes",notesRouter);
 
-mongoose.connect("mongodb+srv://Meenakshi:kd9UoGtWC5RXcF7c@cluster0.w1rnzg4.mongodb.net/notes?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
+mongoose.connect(DATABASE_URl).then(()=>{
     console.log("MongoDB connected");
     app.listen(PORT,()=>
         console.log(`Server running on port ${PORT}`));
